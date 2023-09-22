@@ -1,3 +1,7 @@
 from django.db import models
+from view.models import Team
 
-# Create your models here.
+class Referee(models.Model):
+    username = models.CharField(max_length=100)
+
+    assignedTeams = models.ManyToManyField(Team)

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="cs-CZ">
+    <head>
+        <meta charset="utf-8" />
+        <title>Volgiáda</title>
+    </head>
+    <body>
+        <ul>
+            {% for team in teams %}
+                <li>{{ team.name }}: {{ team.score }}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

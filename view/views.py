@@ -59,4 +59,4 @@ def index(request):
 
     # Render the team standings
     context = { 'teams': sortTeams(orderedTeams)[::-1] }
-    return render(request, "view/index.html", context)
+    return render(request, 'view/index.html', context)

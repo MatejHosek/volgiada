@@ -31,9 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'view.apps.ViewConfig',
-    'referee.apps.RefereeConfig',
-    'manage.apps.ManageConfig',
+    'volgiadaApp.apps.ViewConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',

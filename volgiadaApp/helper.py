@@ -1,3 +1,5 @@
+from volgiadaApp.models import Team, ProblemSolution
+
 # Comparator for merge sort
 def compare(team: dict, baseline: dict) -> int:
     if team['score'] < baseline['score']:
@@ -32,3 +34,25 @@ def sortTeams(teams: list[dict]) -> list[dict]:
     
     half = len(teams) // 2
     return merge(sortTeams(teams[:half]), sortTeams(teams[half:]))
+
+def orderTeams():
+    # Fetch teams from database and sort by point
+    unorderedTeams = Team.objects.all()
+    orderedTeams = []
+    for team in unorderedTeams:
+        # Querry the problems solved by team and calculate score
+        solvedProblems = ProblemSolution.objects.filter(team=team)
+
+        score = 0
+        for solvedProblem in solvedProblems:
+            score += solvedProblem.points
+
+        # Create a dictionary representing the team
+        orderedTeams.append({
+            'name': team.name,
+            'school': team.school,
+
+            'score': score,
+        })
+
+    return sortTeams(orderedTeams)[::-1]

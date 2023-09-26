@@ -25,14 +25,3 @@ class Referee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     assignedTeams = models.ManyToManyField(Team)
-
-# Automatic creation of referee profile on user creation
-@receiver(post_save, sender=User)
-def create_referee_profile(sender, instance, created, **kwargs):
-    if created:
-        Referee.objects.create(user=instance)
-
-# Automatic update of referee profile on user update
-@receiver(post_save, sender=User)
-def save_referee_profile(sender, instance, **kwargs):
-    instance.profile.save()

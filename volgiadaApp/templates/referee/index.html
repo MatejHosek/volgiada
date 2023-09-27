@@ -5,6 +5,10 @@
         <title>Panel rozhodčího</title>
     </head>
     <body>
-        
+        <ul>
+            {% for team in teams %}
+                <li>{{ team.name }}</li>
+            {% endfor %}
+        </ul>
     </body>
 </html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="cs-CZ">
+    <head>
+        <meta charset="utf-8" />
+        <title>Přihlášení</title>
+    </head>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Uživatelské jméno</label>
+            <input type="text" id="username" name="username" size="10" />
+    
+            <label for="password">Heslo</label>
+            <input type="password" id="password" name="password" size="10" />
+    
+            {% if unsuccesfull == True %}
+                <label for="submit" style="color:red" >Přihlášení nebylo úspěšné</label>
+            {% endif %}
+            <input type="submit" name="submit" value="Přihlásit"/>
+        </form>
+    </body>
+</html>

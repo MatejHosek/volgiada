@@ -28,6 +28,14 @@ def refereeIndex(request):
     return render(request, 'referee/index.html', context)
 
 def manageIndex(request):
+    # If user isn't logged in, redirect to login page
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    # If user doesn't have manager permissions, raise 403
+    if not request.user.groups.filter(name='manager').exists():
+        raise PermissionDenied()
+
     return render(request, 'manage/index.html')
 
 def login(request):

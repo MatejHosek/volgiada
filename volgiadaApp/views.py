@@ -36,7 +36,18 @@ def manageIndex(request):
     if not request.user.groups.filter(name='manager').exists():
         raise PermissionDenied()
 
-    return render(request, 'manage/index.html')
+    context = { 
+        # List all referees
+        'referees': Referee.objects.all(),
+        
+        # List all problems
+        'problems': Problem.objects.all(),
+
+        # List all teams
+        'teams': Team.objects.all()
+    }
+
+    return render(request, 'manage/index.html', context)
 
 def login(request):
     if request.method == 'GET':

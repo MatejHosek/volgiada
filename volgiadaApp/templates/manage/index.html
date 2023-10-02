@@ -5,6 +5,49 @@
         <title>Panel administrátora</title>
     </head>
     <body>
-        
+        <section>
+            <h1>Rozhodčí</h1>
+            <ul style="list-style-type: none;">
+                {% for referee in referees %}
+                <li>
+                    <ul style="display: flex; justify-content: space-between; list-style-type: none;">
+                        <li>{{ referee.user.username }}</li>
+                        <li>Upravit</li>
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h1>Příklady</h1>
+            <ul style="list-style-type: none;">
+                {% for problem in problems %}
+                <li>
+                    <ul style="display: flex; justify-content: space-between; list-style-type: none;">
+                        <li>{{ problem.name }}</li>
+                        <li>Upravit</li>
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section>
+            <h1>Týmy</h1>
+            <ul style="list-style-type: none;">
+                {% for team in teams %}
+                <li>
+                    <ul style="display: flex; justify-content: space-between; list-style-type: none;">
+                        <li>
+                            <h2>{{ team.name }}</h2>
+                            {{ team.school }}
+                        </li>
+                        <li>Upravit</li>
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
     </body>
 </html>

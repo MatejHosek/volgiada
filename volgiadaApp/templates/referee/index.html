@@ -5,10 +5,25 @@
         <title>Panel rozhodčího</title>
     </head>
     <body>
-        <ul>
-            {% for team in teams %}
-                <li>{{ team.name }}</li>
-            {% endfor %}
-        </ul>
+        {% for team in teams %}
+            <details>
+                <summary style="cursor: pointer">
+                {{ team.name }} <br>
+                {{ team.school }}
+                </summary>
+
+                {% for problem in problems %}
+                    <ul style="display: flex; justify-content: space-between; list-style: none;">
+                        <li>{{ problem.name }}</li>
+
+                        {% for solution in solutions %}
+                            {% if solution.problem == problem and solution.team == team %}
+                            <li>{{ solution.points }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </details>
+        {% endfor %}
     </body>
 </html>

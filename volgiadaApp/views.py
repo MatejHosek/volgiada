@@ -23,6 +23,7 @@ def refereeIndex(request):
         'user': request.user,
         'teams': request.user.referee.assignedTeams.all(),
         'problems': Problem.objects.all(),
+        'solutions': ProblemSolution.objects.all(),
     }
 
     return render(request, 'referee/index.html', context)

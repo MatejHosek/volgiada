@@ -6,6 +6,9 @@ class Team(models.Model):
     name = models.CharField(max_length=256)
     school = models.CharField(max_length=256)
 
+    def __str__(self):
+        return f'{self.name} ({self.school})'
+
 class Problem(models.Model):
     """A model representing competition problems"""
 

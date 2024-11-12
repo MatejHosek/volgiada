@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volgiáda</title>
+</head>
+
+<body>
+    {% if teams %}
+        <ul>
+            {% for team in teams %}
+                <li>{{ team }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No teams registered
+    {% endif %}
+</body>
+</html>

@@ -21,7 +21,11 @@ def index(request):
     context = {
         'teams': sorted(teams, reverse=True),
         'isFrozen': Time.objects.get(name='freeze').time < timezone.now(),
+        'countdownEnd': Time.objects.get(name='end').time.timestamp() * 1000,
     }
+
+    print(context['countdownEnd'])
+    print(timezone.now().timestamp())
 
     return render(request, 'judge/index.html', context)
 

@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <p id="timer" countdownEnd="{{ countdownEnd }}"></p>
     {% if isFrozen %}
         <!-- Display a text that the results are frozen -->
         <p>Konec soutěže se blíží! Tyto výsledky jsou zmražené a nejsou finální.</p>
@@ -23,3 +24,6 @@
     {% endif %}
 </body>
 </html>
+
+{% load static %}
+<script src="{% static 'countdown.js'%}"></script>

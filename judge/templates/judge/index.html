@@ -7,10 +7,15 @@
 </head>
 
 <body>
+    {% if isFrozen %}
+        <!-- Display a text that the results are frozen -->
+        <p>Konec soutěže se blíží! Tyto výsledky jsou zmražené a nejsou finální.</p>
+    {% endif %}
+
     {% if teams %}
         <ul>
             {% for team in teams %}
-                <li>{{ team }}</li>
+                <li>{{ team.name }}, {{ team.school }} {{ team.count_points }}</li>
             {% endfor %}
         </ul>
     {% else %}

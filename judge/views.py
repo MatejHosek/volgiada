@@ -5,14 +5,23 @@ from .models import *
 
 def index(request):
     # TODO: Sort teams by the score they achieved before freeze time
-    # TODO: Display a massage that the results are frozen after freeze time
-    # TODO: Display a countdown before start time
     # TODO: Display a competition end message after end time
 
+    # Check if the competition has begun
+    competitionStart = Time.objects.get(name='start').time
+    if competitionStart > timezone.now():
+        # Display the countdown
+        context = {
+            'countdownEnd': competitionStart.timestamp() * 1000,
+        }
+        return render(request, 'judge/countdown.html', context)
+
+    # Display the score of teams
     teams = Team.objects.all()
 
     context = {
         'teams': teams,
+        'isFrozen': Time.objects.get(name='freeze').time < timezone.now(),
     }
 
     return render(request, 'judge/index.html', context)

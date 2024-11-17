@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from .models import *
 
 def index(request):
-    # TODO: Sort teams by the score they achieved before freeze time
     # TODO: Display a competition end message after end time
 
     # Check if the competition has begun
@@ -20,7 +19,7 @@ def index(request):
     teams = Team.objects.all()
 
     context = {
-        'teams': teams,
+        'teams': sorted(teams, reverse=True),
         'isFrozen': Time.objects.get(name='freeze').time < timezone.now(),
     }
 

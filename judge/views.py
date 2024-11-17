@@ -4,8 +4,6 @@ from django.http import HttpResponse
 from .models import *
 
 def index(request):
-    # TODO: Display a competition end message after end time
-
     # Check if the competition has begun
     competitionStart = Time.objects.get(name='start').time
     if competitionStart > timezone.now():
@@ -14,6 +12,12 @@ def index(request):
             'countdownEnd': competitionStart.timestamp() * 1000,
         }
         return render(request, 'judge/countdown.html', context)
+    
+    # Check if competition is over
+    competitionEnd = Time.objects.get(name='end').time
+    if competitionEnd < timezone.now():
+        # Display the end message
+        return HttpResponse('Soutěž skončila, děkujeme za účast.')
 
     # Display the score of teams
     teams = Team.objects.all()
@@ -21,11 +25,8 @@ def index(request):
     context = {
         'teams': sorted(teams, reverse=True),
         'isFrozen': Time.objects.get(name='freeze').time < timezone.now(),
-        'countdownEnd': Time.objects.get(name='end').time.timestamp() * 1000,
+        'countdownEnd': competitionEnd.timestamp() * 1000,
     }
-
-    print(context['countdownEnd'])
-    print(timezone.now().timestamp())
 
     return render(request, 'judge/index.html', context)
 

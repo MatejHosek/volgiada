@@ -21,11 +21,16 @@ class Team(models.Model):
 
     def count_points(
             self,
-            time = min(timezone.now(), Time.objects.get(name='freeze').time)
+            time = None
         ):
         """Counts the Team's points achieved before the specified time
         (defaults to min(now, competition freeze time))
         """
+
+        # If time isn't set, set it to now or competition freeze
+        if time == None:
+            time = min(timezone.now(), Time.objects.get(name='freeze').time)
+
         points = 0
         for score in self.score_set.filter(time__lte=time):
             points += score.points

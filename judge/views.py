@@ -13,6 +13,22 @@ def check_permissions(request, group):
         return True
     return False
 
+def prompt_or_403(request, group, redirect):
+    """Check if user has the required rights. Returns login redirect,
+    HttpResponse with status 403 if not, None if yes
+    """
+
+    # Check for user auth
+    if request.user.is_anonymous:
+        # Prompt the user to log in
+        return HttpResponseRedirect(
+            reverse('judge:login_view',
+                    kwargs={'redirect_view': redirect})
+        )
+
+    if not check_permissions(request, group):
+        return HttpResponse('403 Forbidden', status=403)
+
 def index(request):
     # Check if the competition has begun
     competitionStart = Time.objects.get(name='start').time
@@ -41,16 +57,10 @@ def index(request):
     return render(request, 'judge/index.html', context)
 
 def judge_view(request):
-    # Check for user auth
-    if request.user.is_anonymous:
-        # Prompt the user to log in
-        return HttpResponseRedirect(
-            reverse('judge:login_view',
-                    kwargs={'redirect_view': 'judge_view'})
-        )
-
-    if not check_permissions(request, 'competition_judge'):
-        return HttpResponse('403 Forbidden', status=403)
+    # Check for user auth and permissions
+    userStatus = prompt_or_403(request, 'competition_judge', 'judge_view')
+    if userStatus:
+        return userStatus
     
     # List all the assigned teams
     teams = set()
@@ -74,16 +84,10 @@ def team_view(request, team_id):
     return HttpResponse(Team.objects.filter(id=team_id))
 
 def admin_view(request):
-    # Check for user auth
-    if request.user.is_anonymous:
-        # Prompt the user to log in
-        return HttpResponseRedirect(
-            reverse('judge:login_view',
-                    kwargs={'redirect_view': 'admin_view'})
-        )
-
-    if not check_permissions(request, 'competition_admin'):
-        return HttpResponse('403 Forbidden', status=403)
+    # Check for user auth and permissions
+    userStatus = prompt_or_403(request, 'competition_admin', 'admin_view')
+    if userStatus:
+        return userStatus
     
     # TODO: Display teams, problems, judges, competition settings
     return HttpResponse('admin view')

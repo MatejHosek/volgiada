@@ -52,12 +52,26 @@ def judge_view(request):
     if not check_permissions(request, 'competition_judge'):
         return HttpResponse('403 Forbidden', status=403)
     
-    # TODO: Display assigned teams
-    return HttpResponse(request.user)
+    # List all the assigned teams
+    teams = set()
+    for team in Judge.objects.all().filter(user=User.objects.all()[0]):
+        teams.add(team.team)
 
-def team_view(request):
+    # Generate links for all teams
+    links = []
+    for team in teams:
+        links.append(reverse('judge:team_view', kwargs={'team_id': team.id}))
+
+    context = {
+        'teams': list(teams),
+        'links': links,
+    }
+
+    return render(request, 'judge/judge.html', context=context)
+
+def team_view(request, team_id):
     # TODO: Display problems and their scoring for a given team
-    pass
+    return HttpResponse(Team.objects.filter(id=team_id))
 
 def admin_view(request):
     # Check for user auth

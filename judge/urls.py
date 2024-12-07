@@ -6,6 +6,7 @@ app_name = "judge"
 urlpatterns = [
     path("", views.index, name="index"),
     path("judge/", views.judge_view, name="judge_view"),
+    path("judge/team/<int:team_id>", views.team_view, name="team_view"),
     path("admin/", views.admin_view, name="admin_view"),
     path("login/<str:redirect_view>/", views.login_view, name="login_view")
 ]

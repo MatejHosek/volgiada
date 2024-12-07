@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení</title>
+</head>
+<body>
+    <div>
+        <h1>Přihlásit se</h1>
+        {% if failed %}
+            Pokus o přihlášení byl neúspěšný, zkontrolujte jméno a heslo
+        {% endif %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="username">Uživatelské jméno</label>
+            <input id="username" name="username" type="text">
+
+            <label for="password">Heslo</label>
+            <input id="password" name="password" type="password">
+
+            <input type="submit" value="Přihlásit">
+        </form>
+    </div>
+</body>
+</html>

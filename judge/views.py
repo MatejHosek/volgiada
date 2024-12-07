@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth import authenticate, login
 
 from .models import *
 
@@ -42,7 +44,10 @@ def judge_view(request):
     # Check for user auth
     if request.user.is_anonymous:
         # Prompt the user to log in
-        return login_view(request)
+        return HttpResponseRedirect(
+            reverse('judge:login_view',
+                    kwargs={'redirect_view': 'judge_view'})
+        )
 
     if not check_permissions(request, 'competition_judge'):
         return HttpResponse('403 Forbidden', status=403)
@@ -58,7 +63,10 @@ def admin_view(request):
     # Check for user auth
     if request.user.is_anonymous:
         # Prompt the user to log in
-        return login_view(request)
+        return HttpResponseRedirect(
+            reverse('judge:login_view',
+                    kwargs={'redirect_view': 'admin_view'})
+        )
 
     if not check_permissions(request, 'competition_admin'):
         return HttpResponse('403 Forbidden', status=403)
@@ -66,7 +74,23 @@ def admin_view(request):
     # TODO: Display teams, problems, judges, competition settings
     return HttpResponse('admin view')
 
-def login_view(request):
-    # TODO: A login page, redirects back to a page after a successful login
-    # TODO: Implement a login page
-    return HttpResponse('Please log in')
+def login_view(request, redirect_view):
+    if request.method == 'POST':
+        try:
+            username = request.POST["username"]
+            password = request.POST["password"]
+
+            user = authenticate(request, username=username, password=password)
+
+            if user:
+                login(request, user)
+                return HttpResponseRedirect(reverse(f'judge:{redirect_view}'))
+        except:
+            # TODO: Log an error
+            pass
+
+        # Login unsuccessful, render the login page again with a message
+        return render(request, 'judge/login.html', context={'failed': True})
+    
+    # Render the page without an error message on the first load
+    return render(request, 'judge/login.html', context={'failed': False})

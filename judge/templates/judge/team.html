@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ team.name }}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <a href="..">Zpět</a>
+    {{ team }}
+
+    <div class="splitter">
+        {% for problem in problems %}
+            {% if problem.solution != None %}
+                <a class="splitter-item solved" href="TODO" id="problem {{ problem.problem.number }}">      
+                    Úloha {{ problem.problem.number }}: {{ problem.problem.name }}
+                    {{ problem.solution.points }}
+                </a>
+            {% else %}
+                <a class="splitter-item unsolved" href="TODO" id="problem {{ problem.problem.number }}">      
+                    Úloha {{ problem.problem.number }}: {{ problem.problem.name }}
+                    Nevyřešena
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>

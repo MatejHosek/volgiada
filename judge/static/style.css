@@ -11,10 +11,18 @@
     display: inline-block;
     margin: 0;
     padding: 0px;
-    width: 50%;
+    flex: 1;
     min-width: 300px;
 }
 
 .div-link {
     display: block;
+}
+
+.solved {
+    background-color: green;
+}
+
+.unsolved {
+    background-color: red;
 }

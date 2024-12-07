@@ -80,8 +80,34 @@ def judge_view(request):
     return render(request, 'judge/judge.html', context=context)
 
 def team_view(request, team_id):
-    # TODO: Display problems and their scoring for a given team
-    return HttpResponse(Team.objects.filter(id=team_id))
+    # Check for user auth and permissions
+    userStatus = prompt_or_403(request, 'competition_judge', 'judge_view')
+    if userStatus:
+        return userStatus
+    
+    team = Team.objects.get(id=team_id)
+
+    # List all the competition problems
+    problems = []
+    for problem in Problem.objects.all().order_by('number').values():
+        # Search for a score
+        solution = Score.objects.filter(team=team, problem=problem['id'])
+        if len(solution) > 0:
+            solution = solution[0]
+        else:
+            solution = None
+        
+        problems.append({
+            'problem': problem,
+            'solution': solution,
+        })
+
+    context = {
+        'team': team,
+        'problems': problems,
+    }
+
+    return render(request, 'judge/team.html', context)
 
 def admin_view(request):
     # Check for user auth and permissions

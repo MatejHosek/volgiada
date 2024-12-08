@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohodnotit úlohu</title>
+</head>
+<body>
+    <a href="../..">Zpět</a>
+    {{ team }} <br />
+    {{ problem }} <br />
+    {{ score }} <br />
+
+    <form action="" method="post">
+        {% csrf_token %}
+        
+        <div>
+            <input type="radio" name="points" id="none" value="none"
+            {% if score == option %}
+                checked
+            {% endif %} />
+            <label for="none">Zrušit hodnocení</label>
+        </div>
+
+        {% for option in options %}
+            <div>
+                <input type="radio" name="points" id="{{ option }}" value="{{ option }}"
+                {% if score == option %}
+                    checked
+                {% endif %} />
+                <label for="{{ option }}">{{ option }}</label>
+            </div>
+        {% endfor %}
+        <input type="submit" value="Potvrdit">
+    </form>
+</body>
+</html>

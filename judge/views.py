@@ -96,10 +96,16 @@ def team_view(request, team_id):
             solution = solution[0]
         else:
             solution = None
+
+        link = reverse('judge:problem_view', kwargs={
+            'team_id': team.id,
+            'problem_id': problem['id'],
+        })
         
         problems.append({
             'problem': problem,
             'solution': solution,
+            'link': link
         })
 
     context = {
@@ -108,6 +114,54 @@ def team_view(request, team_id):
     }
 
     return render(request, 'judge/team.html', context)
+
+def problem_view(request, team_id, problem_id):
+    # Display the scoring options for a given problem
+    if request.method == 'GET':
+        score = None
+        solution = Score.objects.filter(team=team_id, problem=problem_id)
+        if len(solution) > 0:
+            score = solution[0].points
+
+        context = {
+            'team': Team.objects.get(id=team_id),
+            'problem': Problem.objects.get(id=problem_id),
+            'score': score,
+            'options': range(1, 6),
+        }
+
+        return render(request, 'judge/problem.html', context)
+    
+    # Process the score update
+    if request.method == 'POST':
+        try:
+            points = request.POST['points']
+
+            # Check if score is none
+            if points == 'none':
+                # Delete the scoring, do not assign a new scoring
+                for scoring in Score.objects.filter(team=team_id, problem=problem_id):
+                    scoring.delete()
+            else:
+                points = int(points)
+                # Check if score is within bounds
+                if points < 0 or points > 6:
+                    # TODO: Log an error
+                    raise ValueError
+                
+                # Delete all existing scores
+                for scoring in Score.objects.filter(team=team_id, problem=problem_id):
+                    scoring.delete()
+
+                # Add new score
+                Score.objects.create(
+                    team=Team.objects.get(id=team_id),
+                    problem=Problem.objects.get(id=problem_id),
+                    time=timezone.now(),
+                    points=points,
+                )
+        finally:
+            return HttpResponseRedirect(reverse('judge:team_view', kwargs={'team_id': team_id}))
 
 def admin_view(request):
     # Check for user auth and permissions

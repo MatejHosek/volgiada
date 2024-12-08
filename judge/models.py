@@ -49,7 +49,7 @@ class Team(models.Model):
             return self.name < other.name
         
         # If one team hasn't solved any problems, sort it lower
-        if len(self.score_set.all()) == 0 or len(self.score_set.all()) == 0:
+        if len(self.score_set.all()) == 0 or len(other.score_set.all()) == 0:
             print('One team hasn\'t solved any problems')
             return len(self.score_set.all()) < len(other.score_set.all())
         

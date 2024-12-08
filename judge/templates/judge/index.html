@@ -4,26 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volgiáda</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
-    <p id="timer" countdownEnd="{{ countdownEnd }}">00:00:00</p>
-    {% if isFrozen %}
-        <!-- Display a text that the results are frozen -->
-        <p>Konec soutěže se blíží! Tyto výsledky jsou zmražené a nejsou finální.</p>
-    {% endif %}
-
-    {% if teams %}
-        <ul>
-            {% for team in teams %}
-                <li>{{ team.name }}, {{ team.school }} {{ team.count_points }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        No teams registered
-    {% endif %}
+    <div id="sidebar" class="left">
+        <picture>
+            <source srcset="{% static 'logo_wide.jpeg' %}" media="(max-width: 600px)">
+            <source srcset="{% static 'logo.jpeg' %}" media="(max-width: 1500px)">
+            <img src="{% static 'logo.jpeg' %}" alt="logo" style="width: 100%;">
+        </picture> 
+    </div>
+    
+    <div id="content" class="main">
+        <p id="timer" countdownEnd="{{ countdownEnd }}">00:00:00</p>
+        <script src="{% static 'countdown.js'%}"></script>
+        {% if isFrozen %}
+            <!-- Display a text that the results are frozen -->
+            <p>Konec soutěže se blíží! Tyto výsledky jsou zmražené a nejsou finální.</p>
+        {% endif %}
+    
+        {% if teams %}
+            <div>
+                {% for team in teams %}
+                    <div>
+                        {{ team.team.name }}, {{ team.team.school }} {{ team.team.count_points }}
+    
+                        <!-- List problems -->
+                        <div class="problems">
+                            {% for problem in team.problems %}
+                                <div class="problem-item
+                                {% if problem.solved == True %}
+                                    problem-solved
+                                {% endif %}
+    
+                                {% if problem.problem.number|divisibleby:'5' %}
+                                    problem-wide
+                                {% endif %}
+                                "></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            No teams registered
+        {% endif %}
+    </div>
 </body>
 </html>
-
-{% load static %}
-<script src="{% static 'countdown.js'%}"></script>

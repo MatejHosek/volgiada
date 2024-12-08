@@ -30,30 +30,50 @@ def prompt_or_403(request, group, redirect):
         return HttpResponse('403 Forbidden', status=403)
 
 def index(request):
-    # Check if the competition has begun
+    # Check for competition phase
+    phase, countdown = None, None
+
     competitionStart = Time.objects.get(name='start').time
     if competitionStart > timezone.now():
-        # Display the countdown
-        context = {
-            'countdownEnd': competitionStart.timestamp() * 1000,
-        }
-        return render(request, 'judge/countdown.html', context)
-    
-    # Check if competition is over
-    competitionEnd = Time.objects.get(name='end').time
-    if competitionEnd < timezone.now():
-        # Display the end message
-        return HttpResponse('Soutěž skončila, děkujeme za účast.')
+        phase = 'start'
+        countdown = competitionStart
 
-    # Display the score of teams
-    teams = Team.objects.all()
+    competitionFreeze = Time.objects.get(name='freeze').time
+    competitionEnd = Time.objects.get(name='end').time
+
+    phase = 'ongoing'
+    countdown = competitionEnd
+
+    if competitionFreeze < timezone.now():
+        phase = 'freeze'
+
+    if competitionEnd < timezone.now():
+        phase = 'end'
+
+    # Load teams and their scores
+    teams = []
+    for team in sorted(Team.objects.all(), reverse=True):
+        # Load team's solved problems
+        problems = []
+        for problem in Problem.objects.all().order_by('number').values():
+            problems.append({
+                'problem': problem,
+                'solved': len(Score.objects.filter(team=team.id,
+                                                   problem=problem['id'])) > 0,
+            })
+
+        teams.append({
+            'team': team,
+            'problems': problems,
+        })
 
     context = {
-        'teams': sorted(teams, reverse=True),
-        'isFrozen': Time.objects.get(name='freeze').time < timezone.now(),
-        'countdownEnd': competitionEnd.timestamp() * 1000,
+        'phase': phase,
+        'teams': teams,
+        'countdownEnd': countdown.timestamp() * 1000,
     }
 
+    # TODO: Rendering different templates for each phase
     return render(request, 'judge/index.html', context)
 
 def judge_view(request):

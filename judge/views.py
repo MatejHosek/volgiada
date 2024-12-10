@@ -56,10 +56,15 @@ def index(request):
         # Load team's solved problems
         problems = []
         for problem in Problem.objects.all().order_by('number').values():
+            # Check if problem was solved after competition freeze
+            freeze_time = Time.objects.get(name="freeze")
+
             problems.append({
                 'problem': problem,
-                'solved': len(Score.objects.filter(team=team.id,
-                                                   problem=problem['id'])) > 0,
+                'solved': len(Score.objects.filter(
+                    team=team.id,
+                    problem=problem['id'],
+                    time__lte=freeze_time.time)) > 0,
             })
 
         teams.append({

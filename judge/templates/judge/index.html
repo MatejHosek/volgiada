@@ -22,9 +22,8 @@
         <div id="content" class="main">
             <h1 id="timer" class="center" countdownEnd="{{ countdownEnd }}">00:00:00</h1>
             <script src="{% static 'countdown.js'%}"></script>
-            {% if isFrozen %}
-                <!-- Display a text that the results are frozen -->
-                <p>Konec soutěže se blíží! Tyto výsledky jsou zmražené a nejsou finální.</p>
+            {% if message %}
+                <p class="center medium" style="margin-bottom: 10px;">{{ message }}</p>
             {% endif %}
         
             {% if teams %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volgiáda</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body style="background-image: url({% static 'background2.jpg' %});">
+    <div id="container" class="container center">
+        <div style="height:80vh; margin-bottom: 10px;">
+            <picture>
+                <source srcset="{% static 'logo_wide.jpeg' %}" media="(max-width: 1500px)">
+                <img src="{% static 'logo_wide.jpeg' %}" alt="logo" style="height:80vh" class="vertical-center">
+            </picture> 
+        </div>
+        
+        <div id="content" class="main vertical-center">
+            <p class="center medium">Soutěž skočila, děkujeme za účast</p>
+        </div>
+    </div>
+</body>
+</html>

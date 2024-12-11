@@ -20,7 +20,7 @@
     flex-wrap: wrap;
     justify-content: left;
     align-items: stretch;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     width: 100%;
 }
 
@@ -80,6 +80,14 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     border: 3px solid purple;
     border-radius: 10px;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
 
 .container {

@@ -31,21 +31,24 @@ def prompt_or_403(request, group, redirect):
 
 def index(request):
     # Check for competition phase
-    phase, countdown = None, None
+    phase, countdown, message = None, None, None
 
     competitionStart = Time.objects.get(name='start').time
     if competitionStart > timezone.now():
         phase = 'start'
         countdown = competitionStart
+        message = 'Soutěž brzy začne'
 
     competitionFreeze = Time.objects.get(name='freeze').time
     competitionEnd = Time.objects.get(name='end').time
 
-    phase = 'ongoing'
-    countdown = competitionEnd
+    if phase is None:
+        phase = 'ongoing'
+        countdown = competitionEnd
 
     if competitionFreeze < timezone.now():
         phase = 'freeze'
+        message = 'Konec soutěže se blíží! Výsledky byly zmraženy'
 
     if competitionEnd < timezone.now():
         phase = 'end'
@@ -76,9 +79,12 @@ def index(request):
         'phase': phase,
         'teams': teams,
         'countdownEnd': countdown.timestamp() * 1000,
+        'message': message,
     }
 
-    # TODO: Rendering different templates for each phase
+    if phase == 'end':
+        return render(request, 'judge/over.html', context)
+    
     return render(request, 'judge/index.html', context)
 
 def judge_view(request):

@@ -21,7 +21,7 @@ function updateTimer() {
   );
 
   // If the timer has elapsed, reload the page
-  if (distance <= 500) {
+  if (distance <= 0) {
     location.reload();
   }
 }

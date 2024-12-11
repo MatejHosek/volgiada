@@ -1,3 +1,23 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.login-panel {
+    margin-bottom: 10px;
+    width: min-content;
+}
+
+.login-panel+label {
+    font-size: 18px;
+}
+
+.background {
+    background-color: white;
+    border: 2px solid purple;
+
+    padding:30px
+}
+
 .splitter {
     display: flex;
     flex-wrap: wrap;
@@ -86,7 +106,6 @@
     padding: 10px;
 
     background: white;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     border: 3px solid purple;
     border-radius: 10px;
 }
@@ -104,6 +123,15 @@
     height:90%;
 
     margin:50px;
+}
+
+.center-absolute {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .center {

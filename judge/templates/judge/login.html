@@ -4,22 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Přihlášení</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-<body>
-    <div>
-        <h1>Přihlásit se</h1>
+<body  style="background-image: url({% static 'background.jpg' %});">
+    <div class="center-absolute background">
+        <h1 style="text-align: center;">Přihlásit se</h1>
         {% if failed %}
-            Pokus o přihlášení byl neúspěšný, zkontrolujte jméno a heslo
+            <p style="max-width: 300px;">
+                Pokus o přihlášení byl neúspěšný, zkontrolujte jméno a heslo
+            </p>
         {% endif %}
         <form action="" method="post">
             {% csrf_token %}
-            <label for="username">Uživatelské jméno</label>
-            <input id="username" name="username" type="text">
+            <div class="login-panel">
+                <label class="login-panel" for="username">Uživatelské jméno</label><br />
+                <input style="width: 300px;" id="username" name="username" type="text">
+            </div>
 
-            <label for="password">Heslo</label>
-            <input id="password" name="password" type="password">
+            <div class="login-panel">
+                <label class="login-panel" for="password">Heslo</label><br />
+                <input style="width: 300px;" id="password" name="password" type="password">
+            </div>
 
-            <input type="submit" value="Přihlásit">
+            <input type="submit" value="Přihlásit" style="width:max-content">
         </form>
     </div>
 </body>

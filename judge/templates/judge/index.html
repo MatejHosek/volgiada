@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
-<body style="background-image: url({% static 'background2.jpg' %});">
+<body style="background-image: url({% static 'background.jpg' %});">
     <div id="container" class="container">
         <div id="sidebar" class="left" style="padding-left: 60px">
             <picture>
@@ -20,7 +20,7 @@
         </div>
         
         <div id="content" class="main">
-            <h1 id="timer" class="center" countdownEnd="{{ countdownEnd }}">00:00:00</h1>
+            <h1 id="timer" style="text-align: center;" countdownEnd="{{ countdownEnd }}">00:00:00</h1>
             <script src="{% static 'countdown.js'%}"></script>
             {% if message %}
                 <p class="center medium" style="margin-bottom: 10px;">{{ message }}</p>

@@ -1,11 +1,17 @@
 // Set the countdown end
 var countdownEnd = document.getElementById("timer").getAttribute("countdownEnd");
+var lastReload = null;
 
 function updateTimer() {
   var now = new Date().getTime();
 
   // Find the distance between now and the count down date
   var distance = countdownEnd - now;
+
+  // Set the lastReload for reloading mid-competition
+  if (lastReload == null) {
+    lastReload = now;
+  }
 
   // Time calculations for hours, minutes and seconds
   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -21,7 +27,8 @@ function updateTimer() {
   );
 
   // If the timer has elapsed, reload the page
-  if (distance <= 0) {
+  if (distance <= 0 || lastReload + 10000 < now) {
+    lastReload = now;
     location.reload();
   }
 }

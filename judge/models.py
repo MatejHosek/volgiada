@@ -58,13 +58,13 @@ class Team(models.Model):
             return True
         
         # Check for the highest solved problem number
-        if (self.score_set.all().order_by('problem')[0].problem.number <
-            other.score_set.all().order_by('problem')[0].problem.number):
+        if (self.score_set.all().order_by('-problem')[0].problem.number <
+            other.score_set.all().order_by('-problem')[0].problem.number):
             return True
         
         # Check for time of last problem submission
-        return (self.score_set.all().order_by('time')[0].time >
-                other.score_set.all().order_by('time')[0].time)
+        return (self.score_set.all().order_by('-time')[0].time >
+                other.score_set.all().order_by('-time')[0].time)
 
 class Problem(models.Model):
     """A model representing competition problems"""

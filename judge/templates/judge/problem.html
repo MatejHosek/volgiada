@@ -20,11 +20,11 @@
         {% endif %}
     </div>
     
-    <form action="" method="post" class="center">
+    <form action="" method="post" class="center radio-toolbar">
         {% csrf_token %}
         
         {% for option in options %}
-        <div class="radio-toolbar">
+        <div>
             <input type="radio" name="points" id="{{ option }}" value="{{ option }}"
             {% if score == option %}
             checked
@@ -34,7 +34,7 @@
         {% endfor %}
 
         {% if score %}
-            <div class="radio-toolbar center">
+            <div>
                 <input type="radio" name="points" id="none" value="none"/>
                 <label for="none">Zrušit hodnocení</label>
             </div>

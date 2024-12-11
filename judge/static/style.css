@@ -120,7 +120,7 @@
     margin-left: 10px;
 }
 
-input[type="submit"] {
+.radio-toolbar input[type="submit"] {
     font-size: 28px;
     width: 92%;
 }

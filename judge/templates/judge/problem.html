@@ -4,33 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ohodnotit úlohu</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <a href="../..">Zpět</a>
-    {{ team }} <br />
-    {{ problem }} <br />
-    {{ score }} <br />
-
-    <form action="" method="post">
+    <div style="margin-bottom: 10px;">
+        <a href="../..">Zpět</a><br />
+        {{ team }} <br />
+        {{ problem }} <br />
+        {% if score == None %}
+            Neohodnocena
+        {% else %}
+            Body: {{ score }}
+        {% endif %}
+    </div>
+    
+    <form action="" method="post" class="center">
         {% csrf_token %}
         
-        <div>
-            <input type="radio" name="points" id="none" value="none"
-            {% if score == option %}
-                checked
-            {% endif %} />
-            <label for="none">Zrušit hodnocení</label>
-        </div>
-
         {% for option in options %}
-            <div>
-                <input type="radio" name="points" id="{{ option }}" value="{{ option }}"
-                {% if score == option %}
-                    checked
-                {% endif %} />
-                <label for="{{ option }}">{{ option }}</label>
-            </div>
+        <div class="radio-toolbar">
+            <input type="radio" name="points" id="{{ option }}" value="{{ option }}"
+            {% if score == option %}
+            checked
+            {% endif %} />
+            <label for="{{ option }}">Body: {{ option }}</label>
+        </div>
         {% endfor %}
+
+        {% if score %}
+            <div class="radio-toolbar center">
+                <input type="radio" name="points" id="none" value="none"/>
+                <label for="none">Zrušit hodnocení</label>
+            </div>
+        {% endif %}
         <input type="submit" value="Potvrdit">
     </form>
 </body>

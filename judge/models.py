@@ -45,22 +45,21 @@ class Team(models.Model):
         # Check if both teams solved at least one problem
         # If both teams haven't solved any problems, sort alphabetically
         if len(self.score_set.all()) == 0 and len(self.score_set.all()) == 0:
-            print('Sorting alphabetically')
             return self.name < other.name
         
         # If one team hasn't solved any problems, sort it lower
         if len(self.score_set.all()) == 0 or len(other.score_set.all()) == 0:
-            print('One team hasn\'t solved any problems')
             return len(self.score_set.all()) < len(other.score_set.all())
         
         # Check for the number of points
-        if self.count_points() < other.count_points():
-            return True
+        if self.count_points() != other.count_points():
+            return self.count_points() < other.count_points()
         
         # Check for the highest solved problem number
-        if (self.score_set.all().order_by('-problem')[0].problem.number <
+        if (self.score_set.all().order_by('-problem')[0].problem.number !=
             other.score_set.all().order_by('-problem')[0].problem.number):
-            return True
+            return (self.score_set.all().order_by('-problem')[0].problem.number <
+                    other.score_set.all().order_by('-problem')[0].problem.number)
         
         # Check for time of last problem submission
         return (self.score_set.all().order_by('-time')[0].time >

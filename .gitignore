@@ -3,4 +3,5 @@ volgiada/__pycache__/*
 judge/__pycache__/*
 judge/migrations/*
 
+db.sqlite3
 .vscode/

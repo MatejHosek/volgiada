@@ -11,7 +11,7 @@
 <body>
     <div class="splitter">
         {% for team in teams %}
-        <a class="splitter-item" href="team/{{ forloop.counter }}" id="team {{ forloop.counter }}">      
+        <a class="splitter-item" href="team/{{ team.id }}" id="team {{ team.id }}">      
             <h1>{{ team.name }}</h1>
             <h2>{{ team.school }}</h2>
         </a>

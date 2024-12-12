@@ -167,6 +167,10 @@ body {
     width:90%;
 }
 
+.sidebar {
+    padding: 30px;
+}
+
 .radio-toolbar input[type="radio"]:checked+label {
     background-color: #bbb;
 }
@@ -175,6 +179,11 @@ body {
     .left, .main, .right {
         width: 100%;
 
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .sidebar {
         padding: 0px;
     }
 

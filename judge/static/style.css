@@ -167,10 +167,6 @@ body {
     width:90%;
 }
 
-.sidebar {
-    padding: 30px;
-}
-
 .radio-toolbar input[type="radio"]:checked+label {
     background-color: #bbb;
 }
@@ -183,8 +179,8 @@ body {
         margin: 0px;
     }
 
-    .sidebar {
-        padding: 0px;
+    .left {
+        text-align: center;
     }
 
     .container {

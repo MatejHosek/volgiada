@@ -95,7 +95,7 @@ def judge_view(request):
     
     # List all the assigned teams
     teams = set()
-    for team in Judge.objects.all().filter(user=User.objects.all()[0]):
+    for team in Judge.objects.all().filter(user=request.user):
         teams.add(team.team)
 
     # Generate links for all teams

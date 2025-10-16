@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from .models import *
 
@@ -48,11 +49,22 @@ def index(request):
 
     if competitionFreeze < timezone.now():
         phase = 'freeze'
-        message = 'Konec soutěže se blíží! Výsledky byly zmraženy'
+        message = 'Konec soutěže se blíží! Výsledky byly zamrazeny'
 
     if competitionEnd < timezone.now():
         phase = 'end'
 
+    context = {
+        'message': message,
+    }
+
+    if phase == 'end':
+        return render(request, 'judge/over.html', context)
+    
+    return render(request, 'judge/index.html', context)
+
+@xframe_options_sameorigin
+def leaderboard(request):
     # Load teams and their scores
     teams = []
     for team in sorted(Team.objects.all(), reverse=True):
@@ -76,16 +88,11 @@ def index(request):
         })
 
     context = {
-        'phase': phase,
         'teams': teams,
-        'countdownEnd': countdown.timestamp() * 1000,
-        'message': message,
+        'countdownEnd': Time.objects.get(name='end').time.timestamp() * 1000,
     }
 
-    if phase == 'end':
-        return render(request, 'judge/over.html', context)
-    
-    return render(request, 'judge/index.html', context)
+    return render(request, 'judge/leaderboard.html', context)
 
 def judge_view(request):
     # Check for user auth and permissions

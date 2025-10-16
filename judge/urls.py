@@ -5,6 +5,7 @@ from . import views
 app_name = "judge"
 urlpatterns = [
     path("", views.index, name="index"),
+    path("leaderboard/", views.leaderboard, name="leaderboard"),
     path("judge/", views.judge_view, name="judge_view"),
     path("judge/team/<int:team_id>/", views.team_view, name="team_view"),
     path("judge/team/<int:team_id>/problem/<int:problem_id>/", views.problem_view, name="problem_view"),

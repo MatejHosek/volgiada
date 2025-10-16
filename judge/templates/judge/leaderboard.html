@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div id="content">
+        <h1 id="timer" style="text-align: center;" countdownEnd="{{ countdownEnd }}">00:00:00</h1>
+        <script src="{% static 'countdown.js'%}"></script>
+        {% if message %}
+            <p class="center medium" style="margin-bottom: 10px;">{{ message }}</p>
+        {% endif %}
+    
+        {% if teams %}
+            <div id="teams">
+                {% for team in teams %}
+                    <div id="team {{ forloop.counter }}" class="team">
+                        <div style="display: inline-block; margin-right: 10px;">
+                            <p class="large">{{ team.team.count_points }}</p>
+                        </div>
+                        <div style="display: inline-block;">
+                            <p class="medium">{{ team.team.name }}</p>
+                            {{ team.team.school }}
+                        </div>
+
+                        <!-- List problems -->
+                        <div class="problems">
+                            {% for problem in team.problems %}
+                                <div class="problem-item
+                                {% if problem.solved == True %}
+                                    problem-solved
+                                {% endif %}
+    
+                                {% if problem.problem.number|divisibleby:'5' %}
+                                    problem-wide
+                                {% endif %}
+                                "></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            No teams registered
+        {% endif %}
+    </div>
+</body>
+</html>

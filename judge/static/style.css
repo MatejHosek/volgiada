@@ -1,3 +1,9 @@
+:root {
+    --main_color: #1f648a;
+    --secondary_color: #2985b8;
+    --background_color: white;
+}
+
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -12,8 +18,8 @@ body {
 }
 
 .background {
-    background-color: white;
-    border: 2px solid purple;
+    background-color: var(--background_color);
+    border: 2px solid var(--main_color);
 
     padding:30px
 }
@@ -49,7 +55,7 @@ body {
     padding: 10px;
     margin: 5px;
     
-    color:white;
+    color:var(--background_color);
     text-decoration: none;
 }
 
@@ -58,7 +64,7 @@ body {
     margin-right: 2px;
     width: 12px;
     height: 12px;
-    border: 3px solid purple;
+    border: 3px solid var(--main_color);
     border-radius: 40%;
 }
 
@@ -67,7 +73,7 @@ body {
 }
 
 .problem-solved {
-    background-color: purple;
+    background-color: var(--main_color);
 }
 
 .div-link {
@@ -105,8 +111,8 @@ body {
     width: 50%;
     padding: 10px;
 
-    background: white;
-    border: 3px solid purple;
+    background: var(--background_color);
+    border: 3px solid var(--main_color);
     border-radius: 10px;
 }
 

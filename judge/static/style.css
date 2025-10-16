@@ -111,8 +111,6 @@ body {
     width: 50%;
     padding: 10px;
 
-    height: 80vh;
-
     background: var(--background_color);
     border: 3px solid var(--main_color);
     border-radius: 10px;

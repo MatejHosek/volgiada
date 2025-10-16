@@ -10,5 +10,6 @@ urlpatterns = [
     path("judge/team/<int:team_id>/", views.team_view, name="team_view"),
     path("judge/team/<int:team_id>/problem/<int:problem_id>/", views.problem_view, name="problem_view"),
     path("admin/", views.admin_view, name="admin_view"),
-    path("login/<str:redirect_view>/", views.login_view, name="login_view")
+    path("login/<str:redirect_view>/", views.login_view, name="login_view"),
+    path("credentials/", views.credentials_view, name="credentials_view")
 ]

@@ -29,7 +29,7 @@ class Team(models.Model):
 
         # If time isn't set, set it to now or competition freeze
         if time == None:
-            time = min(timezone.now(), Time.objects.get(name='freeze').time)
+            time = Time.objects.get(name='freeze').time
 
         points = 0
         for score in self.score_set.filter(time__lte=time):
@@ -41,29 +41,30 @@ class Team(models.Model):
         return f'{self.name} ({self.school})'
     
     # TODO: Write tests for comparator
-    def __lt__(self, other):
-        # Check if both teams solved at least one problem
-        # If both teams haven't solved any problems, sort alphabetically
-        if len(self.score_set.all()) == 0 and len(self.score_set.all()) == 0:
-            return self.name < other.name
+    def __lt__(self, other: 'Team'):
+        # Compare score
+        if other.count_points() > self.count_points(): return True
+        if other.count_points() < self.count_points(): return False
         
-        # If one team hasn't solved any problems, sort it lower
-        if len(self.score_set.all()) == 0 or len(other.score_set.all()) == 0:
-            return len(self.score_set.all()) < len(other.score_set.all())
-        
-        # Check for the number of points
-        if self.count_points() != other.count_points():
-            return self.count_points() < other.count_points()
-        
-        # Check for the highest solved problem number
-        if (self.score_set.all().order_by('-problem')[0].problem.number !=
-            other.score_set.all().order_by('-problem')[0].problem.number):
-            return (self.score_set.all().order_by('-problem')[0].problem.number <
-                    other.score_set.all().order_by('-problem')[0].problem.number)
-        
-        # Check for time of last problem submission
-        return (self.score_set.all().order_by('-time')[0].time >
-                other.score_set.all().order_by('-time')[0].time)
+        # Compare highest solved problem
+        time = Time.objects.get(name='freeze').time
+        my_max = self.score_set.filter(time__lte=time).order_by('-problem')[0].problem.number
+        ot_max = other.score_set.filter(time__lte=time).order_by('-problem')[0].problem.number
+
+        if ot_max > my_max: return True
+        if ot_max < my_max: return False
+
+        # Compare last solved problem time
+        time = Time.objects.get(name='freeze').time
+        my_time = self.score_set.filter(time__lte=time).order_by('-time')[0].time
+        ot_time = other.score_set.filter(time__lte=time).order_by('-time')[0].time
+
+        if ot_time > my_time: return True
+        if ot_time < my_time: return False
+
+        # Compare alphabetically
+        if other.name < self.name: return True
+        if other.name > self.name: return False
 
 class Problem(models.Model):
     """A model representing competition problems"""

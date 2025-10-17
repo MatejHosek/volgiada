@@ -230,6 +230,3 @@ def login_view(request, redirect_view):
     
     # Render the page without an error message on the first load
     return render(request, 'judge/login.html', context={'failed': False})
-
-def credentials_view(request):
-    return render(request, 'judge/prihlasovaci_udaje.html')
